@@ -14,10 +14,9 @@ export default function StakingComponent({ tokenAddress }) {
     const [retryCount, setRetryCount] = useState(0);
 
     useEffect(() => {
-        if (isValidAddress(tokenAddress)) {
+        if (tokenAddress) {
+            console.log('Token Address:', tokenAddress);
             loadBalances();
-        } else {
-            setError('Invalid contract address');
         }
     }, [tokenAddress]);
 
@@ -28,38 +27,52 @@ export default function StakingComponent({ tokenAddress }) {
     async function loadBalances(retry = 0) {
         if (typeof window.ethereum !== 'undefined' && tokenAddress) {
             try {
+                console.log('Loading balances for address:', tokenAddress);
                 const provider = new ethers.providers.Web3Provider(window.ethereum);
+                const signer = provider.getSigner();
+                const signerAddress = await signer.getAddress();
+                console.log('Signer address:', signerAddress);
+
                 const contract = new ethers.Contract(tokenAddress, PortfolioToken.abi, provider);
-                const accounts = await provider.listAccounts();
-                
-                if (accounts.length > 0) {
-                    const balance = await contract.balanceOf(accounts[0]);
-                    const staked = await contract.getStakedBalance(accounts[0]);
-                    setBalance(ethers.utils.formatEther(balance));
-                    setStakedAmount(ethers.utils.formatEther(staked));
-                    setError('');
-                    setRetryCount(0);
-                } else {
-                    setError('No accounts found. Please connect your wallet.');
-                }
+                console.log('Contract instance created');
+
+                // Get token name and symbol to verify contract
+                const name = await contract.name();
+                const symbol = await contract.symbol();
+                console.log('Token Name:', name);
+                console.log('Token Symbol:', symbol);
+
+                const balance = await contract.balanceOf(signerAddress);
+                console.log('Balance:', balance.toString());
+                const staked = await contract.getStakedBalance(signerAddress);
+                console.log('Staked:', staked.toString());
+
+                setBalance(ethers.utils.formatEther(balance));
+                setStakedAmount(ethers.utils.formatEther(staked));
+                setError('');
+                setRetryCount(0);
             } catch (err) {
-                console.error("Error loading balances:", err);
+                console.error("Detailed error:", err);
+                setError(`Error loading balances: ${err.message}`);
+                setBalance('0');
+                setStakedAmount('0');
                 if (retry < MAX_RETRIES) {
                     setTimeout(() => {
                         setRetryCount(retry + 1);
                         loadBalances(retry + 1);
                     }, RETRY_DELAY);
-                } else {
-                    setError(`Error loading balances: ${err.message || 'Unknown error'}. Please try again.`);
                 }
             }
         } else {
-            setError('MetaMask not detected. Please install MetaMask.');
+            setError('MetaMask not detected or token address not set');
         }
     }
 
     async function stakeTokens() {
-        if (!amount) return;
+        if (!amount) {
+            setError('Please enter an amount to stake');
+            return;
+        }
         
         setLoading(true);
         setError('');
@@ -68,21 +81,24 @@ export default function StakingComponent({ tokenAddress }) {
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner();
             const contract = new ethers.Contract(tokenAddress, PortfolioToken.abi, signer);
+            console.log('Attempting to stake:', amount, 'tokens');
 
-            // First approve the contract to spend tokens
             const amountToStake = ethers.utils.parseEther(amount);
-            
-            // Call stake function
-            const transaction = await contract.stake(amountToStake);
-            await transaction.wait();
+            console.log('Amount in Wei:', amountToStake.toString());
+
+            // Stake the tokens
+            console.log('Staking tokens...');
+            const stakeTx = await contract.stake(amountToStake);
+            console.log('Stake transaction hash:', stakeTx.hash);
+            await stakeTx.wait();
+            console.log('Stake confirmed');
             
             // Refresh balances
             await loadBalances();
             setAmount('');
-            setError('');
         } catch (err) {
-            console.error("Error staking tokens:", err);
-            setError(`Error staking tokens: ${err.message || 'Unknown error'}`);
+            console.error("Detailed staking error:", err);
+            setError(`Error staking tokens: ${err.message}`);
         } finally {
             setLoading(false);
         }

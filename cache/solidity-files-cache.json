@@ -877,8 +877,8 @@
       ]
     },
     "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\contracts\\PortfolioToken.sol": {
-      "lastModificationDate": 1739768882160,
-      "contentHash": "8678f2b8dac0721ead7166acee0676a7",
+      "lastModificationDate": 1739779935952,
+      "contentHash": "5ab0ee22c050a175098bc654c1a685be",
       "sourceName": "contracts/PortfolioToken.sol",
       "solcConfig": {
         "version": "0.8.24",

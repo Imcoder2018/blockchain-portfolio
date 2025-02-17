@@ -22,8 +22,11 @@ contract PortfolioToken is ERC20, Ownable {
     function stake(uint256 amount) external {
         require(amount > 0, "Cannot stake 0 tokens");
         require(balanceOf(msg.sender) >= amount, "Insufficient balance");
-
-        _transfer(msg.sender, address(this), amount);
+        
+        // Transfer tokens from sender to contract
+        bool success = transfer(address(this), amount);
+        require(success, "Transfer failed");
+        
         stakedBalances[msg.sender] += amount;
         stakingTimestamp[msg.sender] = block.timestamp;
 
@@ -36,7 +39,7 @@ contract PortfolioToken is ERC20, Ownable {
         require(block.timestamp >= stakingTimestamp[msg.sender] + 1 days, "Staking period not complete");
 
         stakedBalances[msg.sender] -= amount;
-        _transfer(address(this), msg.sender, amount);
+        require(transfer(msg.sender, amount), "Transfer failed");
 
         emit Unstaked(msg.sender, amount);
     }

@@ -44,7 +44,7 @@ export default function Home() {
       if (accounts.length > 0) {
         setWalletAddress(accounts[0]);
         // This is the deployed token contract address
-        setTokenAddress('0x5FbDB2315678afecb367f032d93F642f64180aa3');
+        setTokenAddress('0xa513E6E4b8f2a923D98304ec87F64353C4D5C853');
         
         // Check if we're on the correct network (Hardhat)
         const network = await provider.getNetwork();
@@ -112,7 +112,7 @@ export default function Home() {
 
       if (accounts.length > 0) {
         setWalletAddress(accounts[0]);
-        setTokenAddress('0x5FbDB2315678afecb367f032d93F642f64180aa3');
+        setTokenAddress('0xa513E6E4b8f2a923D98304ec87F64353C4D5C853');
       }
     } catch (err) {
       console.error("Error connecting wallet:", err);
