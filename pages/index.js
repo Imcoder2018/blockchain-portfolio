@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import StakingComponent from '../components/StakingComponent';
+import MarketplaceComponent from '../components/MarketplaceComponent';
 
 export default function Home() {
   const [walletAddress, setWalletAddress] = useState('');
   const [tokenAddress, setTokenAddress] = useState('');
+  const [nftAddress, setNftAddress] = useState('');
+  const [marketplaceAddress, setMarketplaceAddress] = useState('');
   const [error, setError] = useState('');
   
   useEffect(() => {
@@ -44,7 +47,9 @@ export default function Home() {
       if (accounts.length > 0) {
         setWalletAddress(accounts[0]);
         // This is the deployed token contract address
-        setTokenAddress('0xa513E6E4b8f2a923D98304ec87F64353C4D5C853');
+        setTokenAddress('0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e');
+        setNftAddress('0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0');
+        setMarketplaceAddress('0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82');
         
         // Check if we're on the correct network (Hardhat)
         const network = await provider.getNetwork();
@@ -112,7 +117,9 @@ export default function Home() {
 
       if (accounts.length > 0) {
         setWalletAddress(accounts[0]);
-        setTokenAddress('0xa513E6E4b8f2a923D98304ec87F64353C4D5C853');
+        setTokenAddress('0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e');
+        setNftAddress('0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0');
+        setMarketplaceAddress('0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82');
       }
     } catch (err) {
       console.error("Error connecting wallet:", err);
@@ -161,7 +168,7 @@ export default function Home() {
                 <p className="text-gray-600">Loading token information...</p>
               </div>
             ) : (
-              <StakingComponent tokenAddress={tokenAddress} />
+              <StakingComponent tokenAddress={tokenAddress} walletAddress={walletAddress} />
             )}
           </div>
 
@@ -181,17 +188,12 @@ export default function Home() {
         </div>
 
         {/* Marketplace Section */}
-        <div className="mt-8 bg-white p-6 rounded-lg shadow">
-          <h2 className="text-lg font-semibold mb-4">Marketplace</h2>
-          <div className="space-y-3">
-            <div className="border-b pb-2">
-              <p className="text-sm">ERC20 Listings: --</p>
-              <p className="text-sm">NFT Listings: --</p>
-            </div>
-            <button className="w-full bg-purple-100 text-purple-800 p-2 rounded">
-              Create New Listing
-            </button>
-          </div>
+        <div className="mt-8 p-6 bg-white rounded-lg shadow-lg">
+          <MarketplaceComponent 
+            marketplaceAddress={marketplaceAddress}
+            tokenAddress={tokenAddress}
+            nftAddress={nftAddress}
+          />
         </div>
 
         {/* Chainlink Integration Section */}
