@@ -15,3 +15,6 @@ Showcase of ERC token implementations, marketplace features, and Chainlink integ
 2. `npm run compile`
 3. `npm run deploy`
 4. `npm run dev`
+
+Here's Video Demo of project
+https://www.awesomescreenshot.com/video/36764795?key=66e243a710c9738b0c6d6151b8e60639
