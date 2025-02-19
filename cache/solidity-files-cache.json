@@ -113,8 +113,8 @@
       ]
     },
     "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\contracts\\MultiTokenMarketplace.sol": {
-      "lastModificationDate": 1739728422713,
-      "contentHash": "9a8a4b7f8229e1e37ded65cb13525f7e",
+      "lastModificationDate": 1739788290243,
+      "contentHash": "72fac8c6026432248607bb0a197c4bec",
       "sourceName": "contracts/MultiTokenMarketplace.sol",
       "solcConfig": {
         "version": "0.8.24",
@@ -154,8 +154,8 @@
       ]
     },
     "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\access\\Ownable.sol": {
-      "lastModificationDate": 1739719423329,
-      "contentHash": "d3c790edc9ccf808a17c5a6cd13614fd",
+      "lastModificationDate": 1739787556234,
+      "contentHash": "5a20b2cad87ddb61c7a3a6af21289e28",
       "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
       "solcConfig": {
         "version": "0.8.24",
@@ -185,15 +185,51 @@
         "../utils/Context.sol"
       ],
       "versionPragmas": [
-        "^0.8.20"
+        "^0.8.0"
       ],
       "artifacts": [
         "Ownable"
       ]
     },
+    "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol": {
+      "lastModificationDate": 1739787555778,
+      "contentHash": "df36f7051335cd1e748b1b6463b7fdd3",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
     "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\token\\ERC721\\IERC721.sol": {
-      "lastModificationDate": 1739719422491,
-      "contentHash": "1fdc621cd6747e8985e11fc76ce74511",
+      "lastModificationDate": 1739787555844,
+      "contentHash": "48de4c9a3a4ae5ef66a2aa620843413f",
       "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721.sol",
       "solcConfig": {
         "version": "0.8.24",
@@ -223,51 +259,15 @@
         "../../utils/introspection/IERC165.sol"
       ],
       "versionPragmas": [
-        "^0.8.20"
+        "^0.8.0"
       ],
       "artifacts": [
         "IERC721"
       ]
     },
-    "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol": {
-      "lastModificationDate": 1739719422077,
-      "contentHash": "8f19f64d2adadf448840908bbaf431c8",
-      "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "IERC20"
-      ]
-    },
     "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\token\\ERC1155\\IERC1155.sol": {
-      "lastModificationDate": 1739719421571,
-      "contentHash": "1c608119423d96df908c14227957bd75",
+      "lastModificationDate": 1739787555727,
+      "contentHash": "93aa9af4f5d2d2095a71ccde917038bb",
       "sourceName": "@openzeppelin/contracts/token/ERC1155/IERC1155.sol",
       "solcConfig": {
         "version": "0.8.24",
@@ -297,15 +297,15 @@
         "../../utils/introspection/IERC165.sol"
       ],
       "versionPragmas": [
-        "^0.8.20"
+        "^0.8.0"
       ],
       "artifacts": [
         "IERC1155"
       ]
     },
     "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\utils\\Context.sol": {
-      "lastModificationDate": 1739719418269,
-      "contentHash": "67bfbc07588eb8683b3fd8f6f909563e",
+      "lastModificationDate": 1739787555259,
+      "contentHash": "5f2c5c4b6af2dd4551027144797bc8be",
       "sourceName": "@openzeppelin/contracts/utils/Context.sol",
       "solcConfig": {
         "version": "0.8.24",
@@ -333,15 +333,15 @@
       },
       "imports": [],
       "versionPragmas": [
-        "^0.8.20"
+        "^0.8.0"
       ],
       "artifacts": [
         "Context"
       ]
     },
     "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\utils\\introspection\\IERC165.sol": {
-      "lastModificationDate": 1739719421884,
-      "contentHash": "bf0119eb2a570f219729ff38b6cd1df8",
+      "lastModificationDate": 1739787555750,
+      "contentHash": "03e6768535ac4da0e9756f1d8a4a018a",
       "sourceName": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
       "solcConfig": {
         "version": "0.8.24",
@@ -369,15 +369,15 @@
       },
       "imports": [],
       "versionPragmas": [
-        "^0.8.20"
+        "^0.8.0"
       ],
       "artifacts": [
         "IERC165"
       ]
     },
     "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\utils\\introspection\\ERC165.sol": {
-      "lastModificationDate": 1739719419648,
-      "contentHash": "7c03c1e37c3dc24eafb76dc2b8a5c3a6",
+      "lastModificationDate": 1739787555405,
+      "contentHash": "0e7db055ce108f9da7bb6686a00287c0",
       "sourceName": "@openzeppelin/contracts/utils/introspection/ERC165.sol",
       "solcConfig": {
         "version": "0.8.24",
@@ -407,15 +407,15 @@
         "./IERC165.sol"
       ],
       "versionPragmas": [
-        "^0.8.20"
+        "^0.8.0"
       ],
       "artifacts": [
         "ERC165"
       ]
     },
     "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\token\\ERC721\\ERC721.sol": {
-      "lastModificationDate": 1739719420269,
-      "contentHash": "a7951c81f7037d558c6d2f220b0cb38e",
+      "lastModificationDate": 1739787555537,
+      "contentHash": "95602b04f0b53f1139f4668d123ddeb7",
       "sourceName": "@openzeppelin/contracts/token/ERC721/ERC721.sol",
       "solcConfig": {
         "version": "0.8.24",
@@ -443,23 +443,59 @@
       },
       "imports": [
         "./IERC721.sol",
+        "./IERC721Receiver.sol",
         "./extensions/IERC721Metadata.sol",
-        "./utils/ERC721Utils.sol",
+        "../../utils/Address.sol",
         "../../utils/Context.sol",
         "../../utils/Strings.sol",
-        "../../utils/introspection/ERC165.sol",
-        "../../interfaces/draft-IERC6093.sol"
+        "../../utils/introspection/ERC165.sol"
       ],
       "versionPragmas": [
-        "^0.8.20"
+        "^0.8.0"
       ],
       "artifacts": [
         "ERC721"
       ]
     },
+    "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\utils\\Address.sol": {
+      "lastModificationDate": 1739787555212,
+      "contentHash": "211ffd288c1588ba8c10eae668ca3c66",
+      "sourceName": "@openzeppelin/contracts/utils/Address.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.1"
+      ],
+      "artifacts": [
+        "Address"
+      ]
+    },
     "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\utils\\Strings.sol": {
-      "lastModificationDate": 1739719423920,
-      "contentHash": "a55fef2557b35bac18a1880d3c2e6740",
+      "lastModificationDate": 1739787556332,
+      "contentHash": "48686fc32a22a3754b8e63321857dd2a",
       "sourceName": "@openzeppelin/contracts/utils/Strings.sol",
       "solcConfig": {
         "version": "0.8.24",
@@ -487,20 +523,19 @@
       },
       "imports": [
         "./math/Math.sol",
-        "./math/SafeCast.sol",
         "./math/SignedMath.sol"
       ],
       "versionPragmas": [
-        "^0.8.20"
+        "^0.8.0"
       ],
       "artifacts": [
         "Strings"
       ]
     },
-    "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\interfaces\\draft-IERC6093.sol": {
-      "lastModificationDate": 1739719418712,
-      "contentHash": "267d92fe4de67b1bdb3302c08f387dbf",
-      "sourceName": "@openzeppelin/contracts/interfaces/draft-IERC6093.sol",
+    "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\token\\ERC721\\IERC721Receiver.sol": {
+      "lastModificationDate": 1739787556092,
+      "contentHash": "c22d4395e33763de693fd440c6fd10e1",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
@@ -527,17 +562,15 @@
       },
       "imports": [],
       "versionPragmas": [
-        "^0.8.20"
+        "^0.8.0"
       ],
       "artifacts": [
-        "IERC1155Errors",
-        "IERC20Errors",
-        "IERC721Errors"
+        "IERC721Receiver"
       ]
     },
     "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\token\\ERC721\\extensions\\IERC721Metadata.sol": {
-      "lastModificationDate": 1739719422568,
-      "contentHash": "12c206f185cb951213799561fdcaa40d",
+      "lastModificationDate": 1739787555865,
+      "contentHash": "efbc0d15b80a74e34dbe8da0f3e879bb",
       "sourceName": "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol",
       "solcConfig": {
         "version": "0.8.24",
@@ -567,54 +600,15 @@
         "../IERC721.sol"
       ],
       "versionPragmas": [
-        "^0.8.20"
+        "^0.8.0"
       ],
       "artifacts": [
         "IERC721Metadata"
       ]
     },
-    "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\token\\ERC721\\utils\\ERC721Utils.sol": {
-      "lastModificationDate": 1739719420628,
-      "contentHash": "f4b67273e290784d0e155f004ae52f0b",
-      "sourceName": "@openzeppelin/contracts/token/ERC721/utils/ERC721Utils.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../IERC721Receiver.sol",
-        "../../../interfaces/draft-IERC6093.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "ERC721Utils"
-      ]
-    },
     "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\utils\\math\\SignedMath.sol": {
-      "lastModificationDate": 1739719423832,
-      "contentHash": "ae3528afb8bdb0a7dcfba5b115ee8074",
+      "lastModificationDate": 1739787556311,
+      "contentHash": "9488ebd4daacfee8ad04811600d7d061",
       "sourceName": "@openzeppelin/contracts/utils/math/SignedMath.sol",
       "solcConfig": {
         "version": "0.8.24",
@@ -640,55 +634,17 @@
           }
         }
       },
-      "imports": [
-        "./SafeCast.sol"
-      ],
+      "imports": [],
       "versionPragmas": [
-        "^0.8.20"
+        "^0.8.0"
       ],
       "artifacts": [
         "SignedMath"
       ]
     },
-    "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\utils\\math\\SafeCast.sol": {
-      "lastModificationDate": 1739719423744,
-      "contentHash": "2adca1150f58fc6f3d1f0a0f22ee7cca",
-      "sourceName": "@openzeppelin/contracts/utils/math/SafeCast.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "SafeCast"
-      ]
-    },
     "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\utils\\math\\Math.sol": {
-      "lastModificationDate": 1739719422844,
-      "contentHash": "2b2665ae9bdb1af440658741a77fe213",
+      "lastModificationDate": 1739787556222,
+      "contentHash": "fe63409d8a06818b926cf89e0ea88b1b",
       "sourceName": "@openzeppelin/contracts/utils/math/Math.sol",
       "solcConfig": {
         "version": "0.8.24",
@@ -714,93 +670,18 @@
           }
         }
       },
-      "imports": [
-        "../Panic.sol",
-        "./SafeCast.sol"
-      ],
+      "imports": [],
       "versionPragmas": [
-        "^0.8.20"
+        "^0.8.0"
       ],
       "artifacts": [
         "Math"
       ]
     },
-    "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\utils\\Panic.sol": {
-      "lastModificationDate": 1739719423578,
-      "contentHash": "2133dc13536b4a6a98131e431fac59e1",
-      "sourceName": "@openzeppelin/contracts/utils/Panic.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "Panic"
-      ]
-    },
-    "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\token\\ERC721\\IERC721Receiver.sol": {
-      "lastModificationDate": 1739719422627,
-      "contentHash": "729ce0904eb533489ffcc3bfe91237d4",
-      "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "IERC721Receiver"
-      ]
-    },
-    "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\token\\ERC20\\ERC20.sol": {
-      "lastModificationDate": 1739719419830,
-      "contentHash": "227a6eb2225701c12d9c959b758b6333",
-      "sourceName": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+    "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\contracts\\NFTAuction.sol": {
+      "lastModificationDate": 1739787674029,
+      "contentHash": "53ec66e556b8ca3d7235cabba9b0064e",
+      "sourceName": "contracts/NFTAuction.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
@@ -826,21 +707,96 @@
         }
       },
       "imports": [
-        "./IERC20.sol",
-        "./extensions/IERC20Metadata.sol",
-        "../../utils/Context.sol",
-        "../../interfaces/draft-IERC6093.sol"
+        "@openzeppelin/contracts/token/ERC721/IERC721.sol",
+        "@openzeppelin/contracts/security/ReentrancyGuard.sol",
+        "@openzeppelin/contracts/access/Ownable.sol"
       ],
       "versionPragmas": [
-        "^0.8.20"
+        "^0.8.24"
       ],
       "artifacts": [
-        "ERC20"
+        "NFTAuction"
+      ]
+    },
+    "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\security\\ReentrancyGuard.sol": {
+      "lastModificationDate": 1739787556267,
+      "contentHash": "1535f8c0c68463f8c1b5239f7584e71f",
+      "sourceName": "@openzeppelin/contracts/security/ReentrancyGuard.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ReentrancyGuard"
+      ]
+    },
+    "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\contracts\\Staking.sol": {
+      "lastModificationDate": 1739900289695,
+      "contentHash": "9da3ddeb06a08b98d2c3d026489f8d3d",
+      "sourceName": "contracts/Staking.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "@openzeppelin/contracts/security/ReentrancyGuard.sol",
+        "@openzeppelin/contracts/access/Ownable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.24"
+      ],
+      "artifacts": [
+        "Staking"
       ]
     },
     "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\token\\ERC20\\extensions\\IERC20Metadata.sol": {
-      "lastModificationDate": 1739719422130,
-      "contentHash": "794db3115001aa372c79326fcfd44b1f",
+      "lastModificationDate": 1739787555783,
+      "contentHash": "909ab67fc5c25033fe6cd364f8c056f9",
       "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
       "solcConfig": {
         "version": "0.8.24",
@@ -870,15 +826,55 @@
         "../IERC20.sol"
       ],
       "versionPragmas": [
-        "^0.8.20"
+        "^0.8.0"
       ],
       "artifacts": [
         "IERC20Metadata"
       ]
     },
+    "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@openzeppelin\\contracts\\token\\ERC20\\ERC20.sol": {
+      "lastModificationDate": 1739787555454,
+      "contentHash": "3ae5166c6827a9cf1a7a462d1632b464",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IERC20.sol",
+        "./extensions/IERC20Metadata.sol",
+        "../../utils/Context.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC20"
+      ]
+    },
     "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\contracts\\PortfolioToken.sol": {
-      "lastModificationDate": 1739779935952,
-      "contentHash": "5ab0ee22c050a175098bc654c1a685be",
+      "lastModificationDate": 1739899968591,
+      "contentHash": "28de2953088df101da379384c78f00e7",
       "sourceName": "contracts/PortfolioToken.sol",
       "solcConfig": {
         "version": "0.8.24",
@@ -916,8 +912,8 @@
       ]
     },
     "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\contracts\\PortfolioNFT.sol": {
-      "lastModificationDate": 1739769095020,
-      "contentHash": "ae187cc4885b6f8d5777080f8beb1f7b",
+      "lastModificationDate": 1739903114110,
+      "contentHash": "1ea5a4e9fe67d967655f2b795e825611",
       "sourceName": "contracts/PortfolioNFT.sol",
       "solcConfig": {
         "version": "0.8.24",
@@ -952,42 +948,6 @@
       ],
       "artifacts": [
         "PortfolioNFT"
-      ]
-    },
-    "C:\\Users\\mwaqa\\CascadeProjects\\blockchain-portfolio\\node_modules\\@chainlink\\contracts\\src\\v0.8\\interfaces\\AggregatorV3Interface.sol": {
-      "lastModificationDate": 1739719427607,
-      "contentHash": "d9654a0fc044a31d4106ee6bca772add",
-      "sourceName": "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "AggregatorV3Interface"
       ]
     }
   }

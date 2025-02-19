@@ -2,39 +2,19 @@ import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import StakingComponent from '../components/StakingComponent';
 import MarketplaceComponent from '../components/MarketplaceComponent';
+import NFTCollectionComponent from '../components/NFTCollectionComponent';
+import addresses from '../contract-addresses.json';
 
 export default function Home() {
   const [walletAddress, setWalletAddress] = useState('');
-  const [tokenAddress, setTokenAddress] = useState('');
-  const [nftAddress, setNftAddress] = useState('');
-  const [marketplaceAddress, setMarketplaceAddress] = useState('');
   const [error, setError] = useState('');
-  
+  const [activeTab, setActiveTab] = useState('staking');
+
   useEffect(() => {
-    checkWalletConnection();
-    // Listen for account changes
-    if (window.ethereum) {
-      window.ethereum.on('accountsChanged', handleAccountsChanged);
-      window.ethereum.on('chainChanged', () => window.location.reload());
-    }
-    return () => {
-      if (window.ethereum) {
-        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
-      }
-    };
+    checkIfWalletIsConnected();
   }, []);
 
-  function handleAccountsChanged(accounts) {
-    if (accounts.length > 0) {
-      setWalletAddress(accounts[0]);
-      setError('');
-    } else {
-      setWalletAddress('');
-      setError('Please connect your wallet');
-    }
-  }
-
-  async function checkWalletConnection() {
+  async function checkIfWalletIsConnected() {
     try {
       if (!window.ethereum) {
         setError('Please install MetaMask!');
@@ -42,20 +22,13 @@ export default function Home() {
       }
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const accounts = await provider.listAccounts();
+      const accounts = await provider.send("eth_accounts", []);
       
       if (accounts.length > 0) {
         setWalletAddress(accounts[0]);
-        // This is the deployed token contract address
-        setTokenAddress('0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e');
-        setNftAddress('0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0');
-        setMarketplaceAddress('0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82');
-        
-        // Check if we're on the correct network (Hardhat)
-        const network = await provider.getNetwork();
-        if (network.chainId !== 31337) {
-          setError('Please connect to Hardhat Network (Chain ID: 31337)');
-        }
+        setError('');
+      } else {
+        setError('Please connect your wallet');
       }
     } catch (err) {
       console.error("Error checking wallet connection:", err);
@@ -70,147 +43,103 @@ export default function Home() {
         return;
       }
 
-      setError('');
       const provider = new ethers.providers.Web3Provider(window.ethereum);
-      
-      // Request account access
-      const accounts = await window.ethereum.request({ 
-        method: 'eth_requestAccounts' 
-      });
-      
-      // Check network
-      const network = await provider.getNetwork();
-      if (network.chainId !== 31337) {
-        // Try to switch to Hardhat network
-        try {
-          await window.ethereum.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: '0x7A69' }], // 31337 in hex
-          });
-        } catch (switchError) {
-          // If the network doesn't exist, add it
-          if (switchError.code === 4902) {
-            try {
-              await window.ethereum.request({
-                method: 'wallet_addEthereumChain',
-                params: [{
-                  chainId: '0x7A69',
-                  chainName: 'Hardhat Network',
-                  nativeCurrency: {
-                    name: 'ETH',
-                    symbol: 'ETH',
-                    decimals: 18
-                  },
-                  rpcUrls: ['http://127.0.0.1:8545']
-                }]
-              });
-            } catch (addError) {
-              setError('Could not add Hardhat network');
-              return;
-            }
-          } else {
-            setError('Could not switch to Hardhat network');
-            return;
-          }
-        }
-      }
-
-      if (accounts.length > 0) {
-        setWalletAddress(accounts[0]);
-        setTokenAddress('0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e');
-        setNftAddress('0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0');
-        setMarketplaceAddress('0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82');
-      }
+      const accounts = await provider.send("eth_requestAccounts", []);
+      setWalletAddress(accounts[0]);
+      setError('');
     } catch (err) {
       console.error("Error connecting wallet:", err);
-      setError('Failed to connect wallet');
+      setError('Error connecting wallet');
     }
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Navigation */}
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-          <h1 className="text-xl font-bold text-gray-800">Blockchain Portfolio</h1>
-          <div>
-            {error && <p className="text-red-500 text-sm mr-4">{error}</p>}
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-blue-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-indigo-600 mb-4">
+            Blockchain Portfolio Platform
+          </h1>
+          
+          {!walletAddress ? (
             <button
               onClick={connectWallet}
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              {walletAddress ? 
-                `${walletAddress.slice(0,6)}...${walletAddress.slice(-4)}` : 
-                'Connect Wallet'}
+              Connect Wallet
             </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Staking Section */}
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h2 className="text-lg font-semibold mb-4">Token Management</h2>
-            {!walletAddress ? (
-              <div className="text-center py-4">
-                <p className="text-gray-600 mb-4">Please connect your wallet to start staking</p>
-                <button
-                  onClick={connectWallet}
-                  className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
-                >
-                  Connect Wallet
-                </button>
-              </div>
-            ) : !tokenAddress ? (
-              <div className="text-center py-4">
-                <p className="text-gray-600">Loading token information...</p>
-              </div>
-            ) : (
-              <StakingComponent tokenAddress={tokenAddress} walletAddress={walletAddress} />
-            )}
-          </div>
-
-          {/* NFT Section */}
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h2 className="text-lg font-semibold mb-4">NFT Collection</h2>
-            <div className="grid grid-cols-2 gap-4">
-              {[1,2,3].map((nft) => (
-                <div key={nft} className="border p-3 rounded-lg hover:bg-gray-50">
-                  <div className="h-32 bg-gray-200 rounded mb-2"/>
-                  <p className="text-sm">NFT #{nft}</p>
-                  <p className="text-xs text-gray-500">Auction ending in --</p>
-                </div>
-              ))}
+          ) : (
+            <div className="text-sm text-gray-600">
+              Connected: {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
             </div>
+          )}
+
+          {error && (
+            <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-sm text-red-600">{error}</p>
+            </div>
+          )}
+        </div>
+
+        <div className="mb-8">
+          <div className="border-b border-gray-200">
+            <nav className="-mb-px flex justify-center space-x-8">
+              <button
+                onClick={() => setActiveTab('staking')}
+                className={`${
+                  activeTab === 'staking'
+                    ? 'border-indigo-500 text-indigo-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+              >
+                Staking
+              </button>
+              <button
+                onClick={() => setActiveTab('nft')}
+                className={`${
+                  activeTab === 'nft'
+                    ? 'border-indigo-500 text-indigo-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+              >
+                NFT Collection
+              </button>
+              <button
+                onClick={() => setActiveTab('marketplace')}
+                className={`${
+                  activeTab === 'marketplace'
+                    ? 'border-indigo-500 text-indigo-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+              >
+                Marketplace
+              </button>
+              <a
+                href="/mint"
+                className="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              >
+                Mint NFT
+              </a>
+            </nav>
           </div>
         </div>
 
-        {/* Marketplace Section */}
-        <div className="mt-8 p-6 bg-white rounded-lg shadow-lg">
-          <MarketplaceComponent 
-            marketplaceAddress={marketplaceAddress}
-            tokenAddress={tokenAddress}
-            nftAddress={nftAddress}
-          />
+        <div className="mt-8">
+          {activeTab === 'staking' && (
+            <StakingComponent tokenAddress={addresses.token} />
+          )}
+          {activeTab === 'nft' && (
+            <NFTCollectionComponent nftAddress={addresses.nft} />
+          )}
+          {activeTab === 'marketplace' && (
+            <MarketplaceComponent 
+              marketplaceAddress={addresses.marketplace}
+              nftAddress={addresses.nft}
+              tokenAddress={addresses.token}
+            />
+          )}
         </div>
-
-        {/* Chainlink Integration Section */}
-        <div className="mt-8 bg-white p-6 rounded-lg shadow">
-          <h2 className="text-lg font-semibold mb-4">Chainlink Services</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="p-4 border rounded-lg">
-              <h3 className="font-medium mb-2">Price Feeds</h3>
-              <p className="text-sm">ETH/USD: $--</p>
-            </div>
-            <div className="p-4 border rounded-lg">
-              <h3 className="font-medium mb-2">VRF Requests</h3>
-              <p className="text-sm">Pending: --</p>
-            </div>
-          </div>
-        </div>
-      </main>
+      </div>
     </div>
   );
 }

@@ -32,7 +32,7 @@ contract MultiTokenMarketplace is Ownable {
         uint256 price
     );
 
-    constructor() Ownable(msg.sender) {}
+    constructor() Ownable() {}
 
     function listItem(
         address _tokenAddress,
@@ -51,8 +51,7 @@ contract MultiTokenMarketplace is Ownable {
             IERC20(_tokenAddress).transferFrom(msg.sender, address(this), _amount);
         }
 
-        uint256 listingId = nextListingId++;
-        listings[listingId] = Listing({
+        listings[nextListingId] = Listing({
             tokenAddress: _tokenAddress,
             standard: _standard,
             tokenId: _tokenId,
@@ -62,13 +61,25 @@ contract MultiTokenMarketplace is Ownable {
             active: true
         });
 
-        emit ItemListed(listingId, msg.sender, _standard, _tokenAddress, _tokenId, _amount, _price);
+        emit ItemListed(
+            nextListingId,
+            msg.sender,
+            _standard,
+            _tokenAddress,
+            _tokenId,
+            _amount,
+            _price
+        );
+
+        nextListingId++;
     }
 
-    function buyItem(uint256 listingId) external payable {
-        Listing storage listing = listings[listingId];
+    function buyItem(uint256 _listingId) external payable {
+        Listing storage listing = listings[_listingId];
         require(listing.active, 'Listing not active');
-        require(msg.value >= listing.price, 'Insufficient funds');
+        require(msg.value == listing.price, 'Incorrect price');
+
+        listing.active = false;
 
         if (listing.standard == TokenStandard.ERC721) {
             IERC721(listing.tokenAddress).transferFrom(address(this), msg.sender, listing.tokenId);
@@ -79,6 +90,5 @@ contract MultiTokenMarketplace is Ownable {
         }
 
         payable(listing.seller).transfer(msg.value);
-        listing.active = false;
     }
 }

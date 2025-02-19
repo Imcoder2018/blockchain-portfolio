@@ -5,23 +5,23 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract PortfolioNFT is ERC721, Ownable {
-    uint256 private _tokenIds;
+    uint256 public _tokenIds;
     mapping(uint256 => uint256) public tokenPrices;
     mapping(uint256 => string) private _tokenURIs;
     
-    constructor() ERC721("Portfolio NFT", "PNFT") Ownable(msg.sender) {
+    constructor() ERC721("Portfolio NFT", "PNFT") Ownable() {
         _tokenIds = 0;
     }
     
-    function mintNFT(address recipient, string memory tokenURI, uint256 price) 
+    function mintNFT(string memory uri, uint256 price) 
         public 
         returns (uint256) 
     {
         _tokenIds += 1;
         uint256 newItemId = _tokenIds;
         
-        _mint(recipient, newItemId);
-        _tokenURIs[newItemId] = tokenURI;
+        _safeMint(msg.sender, newItemId);
+        _tokenURIs[newItemId] = uri;
         tokenPrices[newItemId] = price;
         
         return newItemId;
@@ -43,7 +43,7 @@ contract PortfolioNFT is ERC721, Ownable {
         tokenPrices[tokenId] = newPrice;
     }
     
-    function _exists(uint256 tokenId) internal view returns (bool) {
-        return tokenId > 0 && tokenId <= _tokenIds;
+    function exists(uint256 tokenId) public view returns (bool) {
+        return _exists(tokenId);
     }
 }

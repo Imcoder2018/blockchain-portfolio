@@ -3,8 +3,9 @@ import { ethers } from 'ethers';
 import MultiTokenMarketplace from '../artifacts/contracts/MultiTokenMarketplace.sol/MultiTokenMarketplace.json';
 import PortfolioToken from '../artifacts/contracts/PortfolioToken.sol/PortfolioToken.json';
 import PortfolioNFT from '../artifacts/contracts/PortfolioNFT.sol/PortfolioNFT.json';
+import addresses from '../contract-addresses.json';
 
-export default function MarketplaceComponent({ marketplaceAddress, tokenAddress, nftAddress }) {
+export default function MarketplaceComponent() {
     const [listings, setListings] = useState({ erc20: [], nft: [] });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -17,15 +18,18 @@ export default function MarketplaceComponent({ marketplaceAddress, tokenAddress,
         tokenId: ''
     });
 
+    const [ownedNFTs, setOwnedNFTs] = useState([]);
+
     useEffect(() => {
-        if (marketplaceAddress) {
+        if (addresses.marketplace) {
             loadListings();
             fetchEthPrice();
+            loadOwnedNFTs();
         }
         // Fetch ETH price every 60 seconds
         const interval = setInterval(fetchEthPrice, 60000);
         return () => clearInterval(interval);
-    }, [marketplaceAddress]);
+    }, []);
 
     async function fetchEthPrice() {
         try {
@@ -49,7 +53,7 @@ export default function MarketplaceComponent({ marketplaceAddress, tokenAddress,
     async function loadListings() {
         try {
             const provider = new ethers.providers.Web3Provider(window.ethereum);
-            const marketplace = new ethers.Contract(marketplaceAddress, MultiTokenMarketplace.abi, provider);
+            const marketplace = new ethers.Contract(addresses.marketplace, MultiTokenMarketplace.abi, provider);
             
             const totalListings = await marketplace.nextListingId();
             const erc20Listings = [];
@@ -84,6 +88,67 @@ export default function MarketplaceComponent({ marketplaceAddress, tokenAddress,
         }
     }
 
+    async function loadOwnedNFTs() {
+        try {
+            setLoading(true);
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+            const nftContract = new ethers.Contract(addresses.nft, PortfolioNFT.abi, signer);
+            
+            const signerAddress = await signer.getAddress();
+            console.log('Loading NFTs for address:', signerAddress);
+            
+            const totalSupply = await nftContract._tokenIds();
+            console.log('Total NFTs minted:', totalSupply.toString());
+            
+            const owned = [];
+            for (let i = 1; i <= totalSupply; i++) {
+                try {
+                    const exists = await nftContract._exists(i);
+                    if (!exists) continue;
+
+                    const owner = await nftContract.ownerOf(i);
+                    if (owner.toLowerCase() === signerAddress.toLowerCase()) {
+                        const uri = await nftContract.tokenURI(i);
+                        let metadata = {
+                            name: `NFT #${i}`,
+                            description: 'Portfolio NFT',
+                            image: 'https://via.placeholder.com/400?text=NFT'
+                        };
+
+                        try {
+                            if (uri.startsWith('data:application/json;base64,')) {
+                                const base64Data = uri.split(',')[1];
+                                const jsonString = atob(base64Data);
+                                metadata = JSON.parse(jsonString);
+                            }
+                        } catch (err) {
+                            console.warn(`Error parsing metadata for NFT ${i}:`, err);
+                        }
+
+                        owned.push({
+                            id: i,
+                            name: metadata.name,
+                            description: metadata.description,
+                            image: metadata.image
+                        });
+                        console.log(`Found owned NFT ${i}:`, metadata);
+                    }
+                } catch (err) {
+                    console.warn(`Error checking NFT ${i}:`, err);
+                }
+            }
+            
+            console.log('Owned NFTs:', owned);
+            setOwnedNFTs(owned);
+            setLoading(false);
+        } catch (err) {
+            console.error('Error loading owned NFTs:', err);
+            setError('Error loading owned NFTs. Please try again.');
+            setLoading(false);
+        }
+    }
+
     async function createListing() {
         setLoading(true);
         setError('');
@@ -91,7 +156,7 @@ export default function MarketplaceComponent({ marketplaceAddress, tokenAddress,
         try {
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner();
-            const marketplace = new ethers.Contract(marketplaceAddress, MultiTokenMarketplace.abi, signer);
+            const marketplace = new ethers.Contract(addresses.marketplace, MultiTokenMarketplace.abi, signer);
 
             let tokenContract;
             let standard;
@@ -99,28 +164,28 @@ export default function MarketplaceComponent({ marketplaceAddress, tokenAddress,
             let amount;
 
             if (newListing.type === 'ERC20') {
-                tokenContract = new ethers.Contract(tokenAddress, PortfolioToken.abi, signer);
+                tokenContract = new ethers.Contract(addresses.token, PortfolioToken.abi, signer);
                 standard = 0; // ERC20
                 amount = ethers.utils.parseEther(newListing.amount);
                 
                 // Approve marketplace to spend tokens
-                const approveTx = await tokenContract.approve(marketplaceAddress, amount);
+                const approveTx = await tokenContract.approve(addresses.marketplace, amount);
                 await approveTx.wait();
             } else {
-                tokenContract = new ethers.Contract(nftAddress, PortfolioNFT.abi, signer);
+                tokenContract = new ethers.Contract(addresses.nft, PortfolioNFT.abi, signer);
                 standard = 1; // ERC721
                 tokenId = newListing.tokenId;
                 amount = 1;
                 
                 // Approve marketplace to transfer NFT
-                const approveTx = await tokenContract.approve(marketplaceAddress, tokenId);
+                const approveTx = await tokenContract.approve(addresses.marketplace, tokenId);
                 await approveTx.wait();
             }
 
             const price = ethers.utils.parseEther(newListing.price);
             
             const tx = await marketplace.listItem(
-                newListing.type === 'ERC20' ? tokenAddress : nftAddress,
+                newListing.type === 'ERC20' ? addresses.token : addresses.nft,
                 standard,
                 tokenId,
                 amount,
@@ -147,7 +212,7 @@ export default function MarketplaceComponent({ marketplaceAddress, tokenAddress,
         try {
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner();
-            const marketplace = new ethers.Contract(marketplaceAddress, MultiTokenMarketplace.abi, signer);
+            const marketplace = new ethers.Contract(addresses.marketplace, MultiTokenMarketplace.abi, signer);
 
             const tx = await marketplace.buyItem(listingId, {
                 value: ethers.utils.parseEther(price)
@@ -236,16 +301,24 @@ export default function MarketplaceComponent({ marketplaceAddress, tokenAddress,
             {showCreateModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                     <div className="bg-white p-6 rounded-lg w-96">
-                        <h3 className="text-lg font-medium mb-4">Create New Listing</h3>
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="text-lg font-medium">Create New Listing</h3>
+                            <button 
+                                onClick={() => setShowCreateModal(false)}
+                                className="text-gray-500 hover:text-gray-700"
+                            >
+                                ✕
+                            </button>
+                        </div>
                         <div className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Type</label>
                                 <select
                                     value={newListing.type}
-                                    onChange={(e) => setNewListing({...newListing, type: e.target.value})}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                    onChange={(e) => setNewListing({...newListing, type: e.target.value, tokenId: '', amount: ''})}
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                 >
-                                    <option value="ERC20">ERC20 Token</option>
+                                    <option value="ERC20">ERC20 Token (PFT)</option>
                                     <option value="NFT">NFT</option>
                                 </select>
                             </div>
@@ -253,38 +326,60 @@ export default function MarketplaceComponent({ marketplaceAddress, tokenAddress,
                             {newListing.type === 'ERC20' && (
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700">Amount</label>
-                                    <input
-                                        type="number"
-                                        value={newListing.amount}
-                                        onChange={(e) => setNewListing({...newListing, amount: e.target.value})}
-                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                                        placeholder="Amount of tokens"
-                                    />
+                                    <div className="mt-1 relative rounded-md shadow-sm">
+                                        <input
+                                            type="number"
+                                            value={newListing.amount}
+                                            onChange={(e) => setNewListing({...newListing, amount: e.target.value})}
+                                            className="block w-full rounded-md border-gray-300 pl-3 pr-12 focus:border-blue-500 focus:ring-blue-500"
+                                            placeholder="0.0"
+                                            min="0"
+                                            step="0.1"
+                                        />
+                                        <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                                            <span className="text-gray-500 sm:text-sm">PFT</span>
+                                        </div>
+                                    </div>
                                 </div>
                             )}
 
                             {newListing.type === 'NFT' && (
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700">Token ID</label>
-                                    <input
-                                        type="number"
+                                    <select
                                         value={newListing.tokenId}
                                         onChange={(e) => setNewListing({...newListing, tokenId: e.target.value})}
-                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                                        placeholder="NFT Token ID"
-                                    />
+                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                    >
+                                        <option value="">Select an NFT</option>
+                                        {ownedNFTs.map(id => (
+                                            <option key={id.id} value={id.id}>{id.name}</option>
+                                        ))}
+                                    </select>
+                                    {ownedNFTs.length === 0 && (
+                                        <p className="mt-1 text-sm text-red-600">
+                                            You don't own any NFTs yet. Mint some first!
+                                        </p>
+                                    )}
                                 </div>
                             )}
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Price (ETH)</label>
-                                <input
-                                    type="number"
-                                    value={newListing.price}
-                                    onChange={(e) => setNewListing({...newListing, price: e.target.value})}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                                    placeholder="Price in ETH"
-                                />
+                                <div className="mt-1 relative rounded-md shadow-sm">
+                                    <input
+                                        type="number"
+                                        value={newListing.price}
+                                        onChange={(e) => setNewListing({...newListing, price: e.target.value})}
+                                        className="block w-full rounded-md border-gray-300 pl-3 pr-12 focus:border-blue-500 focus:ring-blue-500"
+                                        placeholder="0.0"
+                                        min="0"
+                                        step="0.01"
+                                    />
+                                    <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                                        <span className="text-gray-500 sm:text-sm">ETH</span>
+                                    </div>
+                                </div>
                                 {newListing.price && (
                                     <p className="mt-1 text-sm text-gray-600">
                                         ≈ {formatUsdPrice(newListing.price)}
@@ -292,19 +387,22 @@ export default function MarketplaceComponent({ marketplaceAddress, tokenAddress,
                                 )}
                             </div>
 
-                            <div className="flex space-x-4">
+                            <div className="pt-4">
                                 <button
                                     onClick={createListing}
-                                    disabled={loading}
-                                    className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                                    disabled={loading || 
+                                        !newListing.price || 
+                                        (newListing.type === 'ERC20' && !newListing.amount) ||
+                                        (newListing.type === 'NFT' && !newListing.tokenId)}
+                                    className={`w-full px-4 py-2 text-white rounded-lg ${
+                                        loading || !newListing.price || 
+                                        (newListing.type === 'ERC20' && !newListing.amount) ||
+                                        (newListing.type === 'NFT' && !newListing.tokenId)
+                                            ? 'bg-gray-400 cursor-not-allowed'
+                                            : 'bg-blue-500 hover:bg-blue-600'
+                                    }`}
                                 >
-                                    {loading ? 'Creating...' : 'Create'}
-                                </button>
-                                <button
-                                    onClick={() => setShowCreateModal(false)}
-                                    className="flex-1 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
-                                >
-                                    Cancel
+                                    {loading ? 'Creating...' : 'Create Listing'}
                                 </button>
                             </div>
                         </div>

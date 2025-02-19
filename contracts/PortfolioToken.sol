@@ -5,50 +5,77 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract PortfolioToken is ERC20, Ownable {
-    mapping(address => uint256) public stakedBalances;
-    mapping(address => uint256) public stakingTimestamp;
+    mapping(address => uint256) private _stakedBalances;
+    mapping(address => uint256) private _stakingTimestamp;
 
-    event Staked(address indexed user, uint256 amount);
-    event Unstaked(address indexed user, uint256 amount);
+    event TokensStaked(address indexed user, uint256 amount);
+    event TokensUnstaked(address indexed user, uint256 amount);
 
-    constructor() 
-        ERC20("Portfolio Token", "PFT")
-        Ownable(msg.sender)
-    {
-        // Mint initial supply to deployer
-        _mint(msg.sender, 1000000 * 10 ** decimals());
+    constructor(uint256 initialSupply) ERC20("Portfolio Token", "PFT") Ownable() {
+        _mint(msg.sender, initialSupply * (10 ** decimals()));
     }
 
-    function stake(uint256 amount) external {
-        require(amount > 0, "Cannot stake 0 tokens");
+    function stakeTokens(uint256 amount) external {
+        require(amount > 0, "Amount must be greater than 0");
         require(balanceOf(msg.sender) >= amount, "Insufficient balance");
         
-        // Transfer tokens from sender to contract
-        bool success = transfer(address(this), amount);
+        // Check allowance
+        uint256 currentAllowance = allowance(msg.sender, address(this));
+        require(currentAllowance >= amount, "Please approve tokens first");
+
+        // Transfer tokens to contract
+        bool success = transferFrom(msg.sender, address(this), amount);
         require(success, "Transfer failed");
         
-        stakedBalances[msg.sender] += amount;
-        stakingTimestamp[msg.sender] = block.timestamp;
-
-        emit Staked(msg.sender, amount);
+        // Update staking info
+        _stakedBalances[msg.sender] += amount;
+        _stakingTimestamp[msg.sender] = block.timestamp;
+        
+        emit TokensStaked(msg.sender, amount);
     }
 
-    function unstake(uint256 amount) external {
-        require(amount > 0, "Cannot unstake 0 tokens");
-        require(stakedBalances[msg.sender] >= amount, "Insufficient staked balance");
-        require(block.timestamp >= stakingTimestamp[msg.sender] + 1 days, "Staking period not complete");
+    function unstakeTokens(uint256 amount) external {
+        require(amount > 0, "Amount must be greater than 0");
+        require(_stakedBalances[msg.sender] >= amount, "Not enough staked tokens");
 
-        stakedBalances[msg.sender] -= amount;
-        require(transfer(msg.sender, amount), "Transfer failed");
+        // Update staking info
+        _stakedBalances[msg.sender] -= amount;
 
-        emit Unstaked(msg.sender, amount);
+        // Transfer tokens back
+        bool success = transfer(msg.sender, amount);
+        require(success, "Transfer failed");
+        
+        emit TokensUnstaked(msg.sender, amount);
     }
 
     function getStakedBalance(address account) external view returns (uint256) {
-        return stakedBalances[account];
+        return _stakedBalances[account];
     }
 
     function getStakingTimestamp(address account) external view returns (uint256) {
-        return stakingTimestamp[account];
+        return _stakingTimestamp[account];
+    }
+
+    function mint(address to, uint256 amount) external onlyOwner {
+        _mint(to, amount);
+    }
+
+    function _toString(uint256 value) internal pure returns (string memory) {
+        if (value == 0) {
+            return "0";
+        }
+        uint256 temp = value;
+        uint256 digits;
+        while (temp != 0) {
+            digits++;
+            temp /= 10;
+        }
+        bytes memory buffer = new bytes(digits);
+        while (value != 0) {
+            digits -= 1;
+            buffer[digits] = bytes1(uint8(48 + uint256(value % 10)));
+            value /= 10;
+        }
+        return string(buffer);
     }
 }
